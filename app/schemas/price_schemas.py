@@ -1,5 +1,6 @@
 from marshmallow import Schema, ValidationError, fields, validates
-from utils.date_util import validate_date
+
+from app.utils.date_util import validate_date
 
 
 class PriceRequestSchema(Schema):

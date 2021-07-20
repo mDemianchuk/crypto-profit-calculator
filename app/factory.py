@@ -1,10 +1,11 @@
-from config import Config, Env
 from flask import Flask
 from flask_smorest import Api
 from marshmallow import EXCLUDE
-from routes.price_routes import blp as prices_blp
 from webargs.flaskparser import FlaskParser
 from werkzeug.exceptions import HTTPException, InternalServerError
+
+from app.config import Config, Env
+from app.routes.price_routes import blp as prices_blp
 
 
 def create_app():

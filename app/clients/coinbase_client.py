@@ -1,6 +1,7 @@
 import requests
-from utils.date_util import get_today
 from werkzeug.exceptions import abort
+
+from app.utils.date_util import get_today
 
 
 class CoinbaseClient:
