@@ -13,7 +13,7 @@ blp = Blueprint(
 
 
 @blp.route("/")
-class PriceRequest(MethodView):
+class PriceRoutes(MethodView):
     @blp.arguments(PriceRequestSchema, location="query")
     @blp.response(200, PriceResponseSchema)
     def get(self, query_params: dict):

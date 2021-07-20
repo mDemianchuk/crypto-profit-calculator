@@ -6,6 +6,7 @@ from werkzeug.exceptions import HTTPException, InternalServerError
 
 from app.config import Config, Env
 from app.routes.price_routes import blp as prices_blp
+from app.routes.report_routes import blp as reports_blp
 
 
 def create_app():
@@ -15,6 +16,7 @@ def create_app():
     FlaskParser.DEFAULT_UNKNOWN_BY_LOCATION["json"] = EXCLUDE
     api = Api(app)
     api.register_blueprint(prices_blp, url_prefix=Env.BASE_PATH + prices_blp.url_prefix)
+    api.register_blueprint(reports_blp, url_prefix=Env.BASE_PATH + reports_blp.url_prefix)
 
     @app.errorhandler(HTTPException)
     def handle_http_exception(e: HTTPException):
