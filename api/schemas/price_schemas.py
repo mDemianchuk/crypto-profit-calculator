@@ -1,5 +1,4 @@
-from marshmallow import Schema, fields, validates, ValidationError
-
+from marshmallow import Schema, ValidationError, fields, validates
 from utils.date_util import validate_date
 
 

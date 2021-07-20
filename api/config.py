@@ -1,15 +1,13 @@
+import logging
 import os
 import sys
-import logging
 
 
 class Env:
     try:
         BASE_PATH = os.environ["BASE_PATH"]
     except KeyError as e:
-        logging.critical(
-            f"Environment variable {e} is not set. Could not start the application."
-        )
+        logging.critical(f"Environment variable {e} is not set. Could not start the application.")
         sys.exit(-1)
 
 

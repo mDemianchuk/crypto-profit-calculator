@@ -9,3 +9,12 @@ repos:
     rev: stable
     hooks:
       - id: black
+  - repo: https://github.com/hadialqattan/pycln
+    rev: stable
+    hooks:
+      - id: pycln
+  - repo: https://github.com/pycqa/isort
+    rev: 5.9.2
+    hooks:
+      - id: isort
+        files: "\\.(py)$"

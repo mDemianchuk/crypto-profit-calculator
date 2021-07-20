@@ -1,7 +1,6 @@
+from clients.coinbase_client import CoinbaseClient
 from flask.views import MethodView
 from flask_smorest import Blueprint
-
-from clients.coinbase_client import CoinbaseClient
 from schemas.price_schemas import PriceRequestSchema, PriceResponseSchema
 
 blp = Blueprint(
