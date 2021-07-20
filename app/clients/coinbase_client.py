@@ -1,17 +1,17 @@
 import requests
 from werkzeug.exceptions import abort
 
-from app.utils.date_util import get_today
+from app.utils.time_util import get_today
 
 
 class CoinbaseClient:
     __base_url = "https://api.coinbase.com/v2"
     __prices_base_url = f"{__base_url}/prices"
-    __default_currency = "usd"
+    default_currency = "usd"
 
     @classmethod
     def get_spot_price(cls, base_currency: str, currency: str = None, date: str = None):
-        currency = currency or cls.__default_currency
+        currency = currency or cls.default_currency
         date = date or get_today()
         response = requests.get(
             f"{cls.__prices_base_url}/{base_currency}-{currency}/spot",
