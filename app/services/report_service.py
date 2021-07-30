@@ -25,19 +25,15 @@ class ReportService:
         transaction_type = transaction.get(CoinbaseProReportHeader.TYPE).lower()
         datetime = transaction.get(CoinbaseProReportHeader.DATETIME)
         date = extract_date(datetime)
-        amount = float(transaction.get(CoinbaseProReportHeader.AMOUNT))
-        base_price = float(CoinbaseClient.get_spot_price(base_currency, date=date).get("price"))
-        base_value = base_price * amount
-        current_price = float(CoinbaseClient.get_spot_price(base_currency).get("price"))
-        current_value = current_price * amount
-        value_difference = current_value - base_value
+        amount = transaction.get(CoinbaseProReportHeader.AMOUNT)
+        base_price = CoinbaseClient.get_spot_price(base_currency, date=date).get("price")
+        current_price = CoinbaseClient.get_spot_price(base_currency).get("price")
         return {
             "datetime": datetime,
             "type": transaction_type,
             "base_currency": base_currency,
             "currency": CoinbaseClient.default_currency,
-            "amount": str(amount),
-            "base_value": str(base_value),
-            "current_value": str(current_value),
-            "value_difference": str(value_difference),
+            "amount": amount,
+            "base_price": base_price,
+            "current_price": current_price,
         }
