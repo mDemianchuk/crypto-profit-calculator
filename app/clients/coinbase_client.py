@@ -12,18 +12,17 @@ class CoinbaseClient:
     @classmethod
     def get_spot_price(cls, base_currency: str, currency: str = None, date: str = None):
         currency = currency or cls.default_currency
-        date = date or get_today()
+        query_params = {"date": date} if date else {}
         response = requests.get(
             f"{cls.__prices_base_url}/{base_currency}-{currency}/spot",
-            params={"date": date},
+            params=query_params,
         )
         response_dict = response.json()
-        if response.ok:
-            return {
-                "base_currency": base_currency,
-                "currency": currency,
-                "price": response_dict.get("data").get("amount"),
-                "date": date,
-            }
-        else:
+        if not response.ok:
             abort(response.status_code, response_dict["errors"])
+        return {
+            "base_currency": base_currency,
+            "currency": currency,
+            "price": response_dict.get("data").get("amount"),
+            "date": date or get_today(),
+        }
