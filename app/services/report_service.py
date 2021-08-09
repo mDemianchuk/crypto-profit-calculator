@@ -2,7 +2,7 @@ from app.clients.coinbase_client import CoinbaseClient
 from app.models.coinbase_pro_report_header import CoinbaseProReportHeader
 from app.utils.csv_util import read_csv
 from app.utils.list_util import split_in_chunks
-from app.utils.time_util import extract_date, get_today
+from app.utils.time_util import extract_date
 
 
 class ReportService:
