@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crypto-calculator-deployment
+spec:
+  selector:
+    matchLabels:
+      app: crypto-calculator
+  template:
+    metadata:
+      labels:
+        app: crypto-calculator
+    spec:
+      containers:
+        - name: crypto-calculator
+          image: crypto-calculator
+          env:
+            - name: BASE_PATH
+              value: "/api"
+          ports:
+            - containerPort: 80

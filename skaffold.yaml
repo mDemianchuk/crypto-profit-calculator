@@ -1,0 +1,25 @@
+apiVersion: skaffold/v2beta6
+kind: Config
+metadata:
+  name: crypto-calculator-dev
+deploy:
+  kubeContext: minikube
+  kubectl:    # 	beta uses a client side kubectl apply to deploy manifests. You'll need a kubectl CLI version installed that's compatible with your cluster.
+    manifests: # 	the Kubernetes yaml or json manifests.
+      - "k8s/*.yaml"
+build:
+  artifacts:
+    - image: crypto-calculator
+      context: .
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: app/**
+            dest: .
+            strip: app
+portForward:
+  - resourceType: service
+    resourceName: crypto-calculator-service
+    port: 80
+    localPort: 80
