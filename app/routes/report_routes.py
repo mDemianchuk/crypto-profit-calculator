@@ -19,5 +19,5 @@ class ReportRoutes(MethodView):
     def post(self, report_upload: dict):
         csv_report = report_upload.get("csv")
         transactions = ReportService.parse_report(csv_report.read())
-        hydrated_transactions = ReportService.hydrate_transactions(transactions)
-        return flask.jsonify(hydrated_transactions)
+        hydrated_transactions, profit = ReportService.hydrate_transactions(transactions)
+        return flask.jsonify({"profit": profit, "transactions": hydrated_transactions})

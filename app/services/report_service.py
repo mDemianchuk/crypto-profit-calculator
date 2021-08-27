@@ -12,6 +12,7 @@ class ReportService:
 
     @classmethod
     def hydrate_transactions(cls, transactions: list):
+        profit = 0
         hydrated_transactions = cls.map_transactions(transactions)
         current_price_requests = []
         current_prices = []
@@ -40,8 +41,15 @@ class ReportService:
         ) in zip(hydrated_transactions, current_prices, base_prices):
             transaction["current_price"] = current_price["price"]
             transaction["base_price"] = base_price["price"]
-
-        return hydrated_transactions
+            transaction["base_value"] = float(base_price["price"]) * float(transaction["amount"])
+            transaction["current_value"] = float(current_price["price"]) * float(
+                transaction["amount"]
+            )
+            transaction["profit"] = float(transaction["current_value"]) - float(
+                transaction["base_value"]
+            )
+            profit += transaction["profit"]
+        return hydrated_transactions, profit
 
     @classmethod
     def map_transactions(cls, transactions: list):
