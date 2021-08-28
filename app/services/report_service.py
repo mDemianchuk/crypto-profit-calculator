@@ -26,7 +26,7 @@ class ReportService:
             base_price_requests.append(
                 CoinbaseClient.get_spot_price_async(base_currency, date=date)
             )
-            current_price_requests.append((CoinbaseClient.get_spot_price_async(base_currency)))
+            current_price_requests.append(CoinbaseClient.get_spot_price_async(base_currency))
 
         for async_requests in split_in_chunks(current_price_requests):
             current_prices += CoinbaseClient.resolve_spot_price_requests(async_requests)
