@@ -3,7 +3,9 @@ FROM python:3.9-slim
 ENV APP_HOST 0.0.0.0
 ENV APP_PORT 80
 ENV FLASK_APP /app/run.py
+ENV FLASK_ENV development
 ENV PYTHONPATH /usr/bin/python3.9
+ENV PYTHONUNBUFFERED 1
 # Copy the dependencies file
 COPY Pipfile .
 # Install pipenv

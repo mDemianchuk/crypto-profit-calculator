@@ -4,8 +4,8 @@ metadata:
   name: crypto-calculator-dev
 deploy:
   kubeContext: minikube
-  kubectl:    # 	beta uses a client side kubectl apply to deploy manifests. You'll need a kubectl CLI version installed that's compatible with your cluster.
-    manifests: # 	the Kubernetes yaml or json manifests.
+  kubectl:
+    manifests:
       - "k8s/*.yaml"
 build:
   artifacts:
@@ -14,10 +14,8 @@ build:
       docker:
         dockerfile: Dockerfile
       sync:
-        manual:
-          - src: app/**
-            dest: .
-            strip: app
+        infer:
+          - "**/*.py"
 portForward:
   - resourceType: service
     resourceName: crypto-calculator
