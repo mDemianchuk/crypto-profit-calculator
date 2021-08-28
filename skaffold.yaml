@@ -20,6 +20,6 @@ build:
             strip: app
 portForward:
   - resourceType: service
-    resourceName: crypto-calculator-service
+    resourceName: crypto-calculator
     port: 80
     localPort: 80
