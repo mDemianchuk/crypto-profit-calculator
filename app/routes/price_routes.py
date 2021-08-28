@@ -1,8 +1,8 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 
-from app.clients.coinbase_client import CoinbaseClient
 from app.schemas.price_schemas import PriceRequestSchema, PriceResponseSchema
+from app.services.price_service import PriceService
 
 blp = Blueprint(
     name="prices",
@@ -20,4 +20,4 @@ class PriceRoutes(MethodView):
         base_currency = query_params.get("base_currency")
         currency = query_params.get("currency")
         date = query_params.get("date")
-        return CoinbaseClient.get_spot_price(base_currency, currency, date)
+        return PriceService.get_spot_price(base_currency, currency, date)
