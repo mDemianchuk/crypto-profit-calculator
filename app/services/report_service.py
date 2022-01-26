@@ -13,64 +13,34 @@ class ReportService:
     @classmethod
     def hydrate_transactions(cls, transactions: list):
         profit = 0
-        hydrated_transactions = cls.map_transactions(transactions)
-        current_price_requests = []
-        current_prices = []
-        base_price_requests = []
-        base_prices = []
-
-        for transaction in hydrated_transactions:
-            base_currency = transaction.get("base_currency")
-            datetime = transaction.get("datetime")
-            date = extract_date(datetime)
-            base_price_requests.append(
-                CoinbaseClient.get_spot_price_async(base_currency, date=date)
-            )
-            current_price_requests.append(CoinbaseClient.get_spot_price_async(base_currency))
-
-        for async_requests in split_in_chunks(current_price_requests):
-            current_prices += CoinbaseClient.resolve_spot_price_requests(async_requests)
-
-        for async_requests in split_in_chunks(base_price_requests):
-            base_prices += CoinbaseClient.resolve_spot_price_requests(async_requests)
-
-        for (
-            transaction,
-            current_price,
-            base_price,
-        ) in zip(hydrated_transactions, current_prices, base_prices):
-            transaction["current_price"] = current_price["price"]
-            transaction["base_price"] = base_price["price"]
-            transaction["base_value"] = float(base_price["price"]) * float(transaction["amount"])
-            transaction["current_value"] = float(current_price["price"]) * float(
-                transaction["amount"]
-            )
-            transaction["profit"] = float(transaction["current_value"]) - float(
-                transaction["base_value"]
-            )
-            profit += transaction["profit"]
-        return hydrated_transactions, profit
-
-    @classmethod
-    def map_transactions(cls, transactions: list):
-        mapped_transactions = []
+        hydrated_transactions = []
         for transaction in transactions:
             base_currency = transaction.get(CoinbaseProReportHeader.BASE_CURRENCY).lower()
-            # Filter out base currency transactions, for example, USD deposits and fees
+            # Filter out base currency transactions, like USD deposits and fees
             if base_currency != CoinbaseClient.default_currency:
-                mapped_transactions.append(cls.map_transaction(transaction))
-        return mapped_transactions
+                hydrated_transaction = ReportService.hydrate_transaction(transaction)
+                profit += float(hydrated_transaction.get("profit", 0))
+                hydrated_transactions.append(hydrated_transaction)
+        return hydrated_transactions, profit
 
-    @classmethod
-    def map_transaction(cls, transaction: dict):
+    @staticmethod
+    def hydrate_transaction(transaction: dict):
         base_currency = transaction.get(CoinbaseProReportHeader.BASE_CURRENCY).lower()
         transaction_type = transaction.get(CoinbaseProReportHeader.TYPE).lower()
-        datetime = transaction.get(CoinbaseProReportHeader.DATETIME)
-        amount = transaction.get(CoinbaseProReportHeader.AMOUNT)
+        date = extract_date(transaction.get(CoinbaseProReportHeader.DATETIME))
+        amount = float(transaction.get(CoinbaseProReportHeader.AMOUNT))
+        base_price = float(CoinbaseClient.get_spot_price(base_currency, date=date).get("price"))
+        base_value = base_price * amount
+        current_price = float(CoinbaseClient.get_spot_price(base_currency).get("price"))
+        current_value = current_price * amount
+        profit = current_value - base_value
         return {
             "datetime": datetime,
             "type": transaction_type,
             "base_currency": base_currency,
             "currency": CoinbaseClient.default_currency,
-            "amount": amount,
+            "amount": str(amount),
+            "base_value": str(base_value),
+            "current_value": str(current_value),
+            "profit": str(profit),
         }
