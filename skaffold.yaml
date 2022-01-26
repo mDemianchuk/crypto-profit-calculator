@@ -19,5 +19,5 @@ build:
 portForward:
   - resourceType: service
     resourceName: crypto-calculator
-    port: 80
-    localPort: 80
+    port: 5000
+    localPort: 5005

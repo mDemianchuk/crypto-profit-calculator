@@ -1,7 +1,7 @@
 FROM python:3.9-slim
 # Set env vars
 ENV APP_HOST 0.0.0.0
-ENV APP_PORT 80
+ENV APP_PORT 5000
 ENV FLASK_APP /app/run.py
 ENV FLASK_ENV development
 ENV PYTHONPATH /usr/bin/python3.9
