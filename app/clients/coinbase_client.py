@@ -6,11 +6,9 @@ from werkzeug.exceptions import abort
 class CoinbaseClient:
     __base_url = "https://api.coinbase.com/v2"
     __prices_base_url = f"{__base_url}/prices"
-    default_currency = "usd"
 
     @classmethod
-    def get_spot_price(cls, base_currency: str, currency: str = None, date: str = None):
-        currency = currency or cls.default_currency
+    def get_spot_price(cls, base_currency: str, currency: str = "usd", date: str = None):
         query_params = {"date": date} if date else {}
         response = requests.get(
             f"{cls.__prices_base_url}/{base_currency}-{currency}/spot",
