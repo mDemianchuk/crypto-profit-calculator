@@ -1,5 +1,5 @@
 # Crypto Profit Calculator
-Flask-based API for calculating trading profits/losses by analyzing crypto exchange statements. The application uses Coinbase API for fetching historical price data of 150+ cryptocurrencies. The local K8s cluster development and deployment is configured with Docker, minikube, and Skaffold.
+Flask-based API for calculating crypto trading profits/losses. The application uses Coinbase API for fetching historical price data of 150+ cryptocurrencies. The local K8s cluster development and deployment is configured with Docker, minikube, and Skaffold.
 
 ## Prerequisites
 - [Docker](https://docs.docker.com/get-docker/)
